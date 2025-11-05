@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-py"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = "mongodb+srv://sethum:admin@cluster0.ftgyi4m.mongodb.net/todo_app"
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  todos     Todo[]
+  createdAt DateTime @default(now())
+}
+
+model Todo {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  completed Boolean  @default(false)
+  dueDate   DateTime?
+  pinned    Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+}
