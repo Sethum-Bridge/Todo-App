@@ -21,25 +21,6 @@ async def get_token_from_cookie_or_header(request: Request) -> str:
     # First, try to get token from cookie (HTTP-only cookie set by backend)
     token = request.cookies.get("access_token")
     
-    # If not in cookie, try Authorization header
-    if not token:
-        authorization = request.headers.get("Authorization")
-        if authorization:
-            try:
-                scheme, token = authorization.split()
-                if scheme.lower() != "bearer":
-                    raise HTTPException(
-                        status_code=status.HTTP_401_UNAUTHORIZED,
-                        detail="Invalid authentication scheme",
-                        headers={"WWW-Authenticate": "Bearer"},
-                    )
-            except ValueError:
-                raise HTTPException(
-                    status_code=status.HTTP_401_UNAUTHORIZED,
-                    detail="Invalid authorization header",
-                    headers={"WWW-Authenticate": "Bearer"},
-                )
-    
     if not token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

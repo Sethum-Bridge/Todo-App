@@ -84,9 +84,6 @@ async def login(
     refresh_token = create_refresh_token(data={"sub": user.id})
     
     # Set HTTP-only cookies
-    # For cross-origin (localhost:3000 -> 127.0.0.1:8000), use SameSite="none"
-    # Note: Some browsers require Secure=True with SameSite="none", but allow exceptions in dev
-    # Best practice: Use localhost for both frontend and backend to avoid cross-origin issues
     response.set_cookie(
         key="access_token",
         value=access_token,
